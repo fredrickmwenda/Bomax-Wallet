@@ -20,7 +20,7 @@ class MyTextField extends StatelessWidget {
         keyboardType: inputType,
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(20),
+          contentPadding: const EdgeInsets.all(20),
           hintText: hintText,
           hintStyle: kBodyText,
           enabledBorder: OutlineInputBorder(

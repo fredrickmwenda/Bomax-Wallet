@@ -105,12 +105,110 @@ class _CoinDetailState extends State<CoinDetail> {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  Stack(
-                    children: <Widget>[
-                      Column(
-                        children: const <Widget>[],
+               Container(
+                  height: 700.0,
+                    child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: DefaultTabController(
+                              length: 2, 
+                              child: Scaffold(
+                                appBar: PreferredSize(
+                                  preferredSize: const Size.fromHeight(53.0),
+                                  child: AppBar(
+                                    backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                    elevation: 0.0,
+                                    centerTitle: true,
+                                    flexibleSpace: SafeArea(
+                                      child: Container(
+                                        child: Padding(
+                                          padding: 
+                                          const EdgeInsets.only(right: 100.0),
+                                          child: TabBar(
+                                            indicatorColor: Colors.amber,
+                                            labelColor: 
+                                              Theme.of(context).primaryColor,
+                                            unselectedLabelColor:
+                                              Theme.of(context).textSelectionColor,
+                                            indicatorSize: 
+                                              TabBarIndicatorSize.label,
+                                            tabs: [
+                                            Tab(
+                                              child: Row(
+                                                children: const <Widget>[
+                                                  Padding(
+                                                    padding: 
+                                                    EdgeInsets.only(
+                                                        left: 4.0),
+                                                    child: Icon(
+                                                      IconData(0xe900,
+                                                        fontFamily: 'gainers'
+                                                      ),
+                                                      size: 15.0,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      left: 8.0
+                                                    ),
+                                                    child: Text(
+                                                      'Transactions',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Sans'
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            Tab(
+                                              child: Row(
+                                                children: const <Widget>[
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 8.0),
+                                                    child: Icon(
+                                                      IconData(0xe901,
+                                                          fontFamily: 'loser'),
+                                                      size: 15.0,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 8.0),
+                                                    child: Text('About'),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    ),
+                                     automaticallyImplyLeading: false,
+                                  ),
+                                
+
+                                ),
+                                body: const Padding(
+                                  padding: EdgeInsets.only(top: 10.0),
+                                  child:  TabBarView(
+                                    children: [
+                                      // gainer(),
+                                      // loser(),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            )
+                          ),
+                        ],
                       ),
-                    ],
+                    
                   )
                 ],
               )),

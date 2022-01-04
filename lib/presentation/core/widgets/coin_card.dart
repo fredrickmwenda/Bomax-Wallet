@@ -20,7 +20,7 @@ class CoinCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var themeData = Theme.of(context);
+    // var themeData = Theme.of(context);
     return Slidable(
       // Specify a key if the Slidable is dismissible.
       key: const ValueKey(0),
@@ -41,14 +41,14 @@ class CoinCard extends StatelessWidget {
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
-            label: 'Delete',
+            label: 'Send',
           ),
           SlidableAction(
             onPressed: (_) {},
             backgroundColor: const Color(0xFF21B7CA),
             foregroundColor: Colors.white,
             icon: Icons.share,
-            label: 'Share',
+            label: 'Receive',
           ),
         ],
       ),

@@ -50,7 +50,8 @@ class TransactionProcess extends StatelessWidget {
                     //   shape: RoundedRectangleBorder(
                     //     borderRadius: BorderRadius.circular(10),
                     //     side: BorderSide(
-                    //       color:Colors.red.shade700.withOpacity(0.5), width:1)
+                    //       color:Colors.red.shade700.withOpacity(0.5), 
+                    // width:1)
 
                     //   ),
                     //   elevation: 0,

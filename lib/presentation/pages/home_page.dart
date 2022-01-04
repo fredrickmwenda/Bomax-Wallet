@@ -1,22 +1,25 @@
-
+import 'package:bodax_wallet/presentation/pages/news_page.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-
 
 import 'balance_page.dart';
 import 'coin_list_page.dart';
-
 
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final List<Widget> _pages = [const BalancePage(), const CoinListPage(), 
-                                const ProfilePageBody()];
+  final List<Widget> _pages = [
+    const BalancePage(),
+    const CoinListPage(),
+    const NewsPage(),
+    const ProfilePageBody()
+  ];
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -55,27 +58,23 @@ class _HomePageState extends State<HomePage> {
                   isSelected: _pos == 0,
                 ),
                 CollapsibleItem(
-                  text: 'Prices',
-                  icon: Icons.equalizer,
-                  onPressed: () {
-                    setState(() {
-                      _pos = 1;
-                    });
-                  },
-                 isSelected: _pos == 1
-                ),
-
+                    text: 'Prices',
+                    icon: Icons.equalizer,
+                    onPressed: () {
+                      setState(() {
+                        _pos = 1;
+                      });
+                    },
+                    isSelected: _pos == 1),
                 CollapsibleItem(
-                  text: 'Profile',
-                  icon: Icons.person,
-                  onPressed: () {
-                    setState(() {
-                      _pos = 2;
-                    });
-                  },
-                 isSelected: _pos == 2
-                ),
-                
+                    text: 'Profile',
+                    icon: Icons.person,
+                    onPressed: () {
+                      setState(() {
+                        _pos = 2;
+                      });
+                    },
+                    isSelected: _pos == 2),
               ],
               body: Padding(
                 padding: EdgeInsets.only(left: 2.w),
@@ -110,17 +109,46 @@ class _BottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ConvexAppBar(
-        color: Colors.white,
-        backgroundColor: Colors.white,
-        initialActiveIndex: initialPage,
-        items: const [
-          TabItem(icon: Icon(Icons.home_filled)),
-          TabItem(icon: Icon(Icons.equalizer),),
-          TabItem(icon: Icon(Icons.person),),
-            
-          
-        ],
-        onTap: onTap);
+    return GNav(
+      rippleColor: Colors.grey,
+      hoverColor: Colors.grey,
+      haptic: true, // haptic feedback
+      tabBorderRadius: 15, 
+      tabActiveBorder: Border.all(color: Colors.black, width: 1), 
+      // tab button border
+      tabBorder: Border.all(color:Colors.black, width: 1),
+      tabShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), 
+                  blurRadius: 8)], // tab button shadow
+      curve: Curves.easeOutExpo, // tab animation curves
+      duration: const Duration(milliseconds: 900), // tab animation duration
+      gap: 8, // the tab button gap between icon and text 
+      color: Colors.grey[800],
+      activeColor: Colors.purple, // selected icon and text color
+      iconSize: 24, // tab button icon size
+      tabBackgroundColor: Colors.purple.withOpacity(0.1), 
+      // selected tab background color
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), 
+      
+      tabs: const[
+        GButton(
+          icon: Icons.home_filled,
+          text: 'Home',
+        ),
+        GButton(
+          icon: Icons.equalizer,
+          text: 'Market',
+        ),
+        GButton(
+          icon: Icons.new_releases,
+          text: 'News',
+        ),
+        GButton(
+          icon: Icons.person,
+          text: 'Profile',
+        ),
+      ],
+      onTabChange: onTap,
+    );
+  
   }
 }

@@ -24,7 +24,7 @@ class ConfirmationPage extends StatelessWidget {
             elevation: 0,
             centerTitle: true,
             automaticallyImplyLeading: true,
-            brightness: Brightness.light,
+            // brightness: Brightness.light,
             leading: IconButton(
               color: Colors.black,
               iconSize: 35.h,

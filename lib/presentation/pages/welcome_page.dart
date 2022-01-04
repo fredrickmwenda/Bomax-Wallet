@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({Key? key}) : super(key: key);
-  final _pageViewController = new PageController(initialPage: 0);
+  final _pageViewController =  PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {

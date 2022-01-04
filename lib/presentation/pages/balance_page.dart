@@ -1,5 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:auto_route/auto_route.dart';
+// import 'package:auto_route/auto_route.dart';
 import 'package:bodax_wallet/application/coin_list/coin_list_notifier.dart';
 import 'package:bodax_wallet/application/coin_list/coin_list_provider.dart';
 import 'package:bodax_wallet/domain/coin.dart';
@@ -8,10 +8,10 @@ import 'package:bodax_wallet/presentation/core/widgets/critical_failure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:responsive_builder/responsive_builder.dart';
 
-import '../../presentation/routes/router.gr.dart';
+// import '../../presentation/routes/router.gr.dart';
 import '../core/utils.dart';
 
 class BalancePage extends ConsumerWidget {
@@ -58,6 +58,8 @@ class __SuccessContentState extends State<_SuccessContent> {
           backgroundColor: _color,
           elevation: 0,
           centerTitle: true,
+          //remove the back button
+          automaticallyImplyLeading: false,
           brightness: Brightness.dark,
           title: AnimatedCrossFade(
             crossFadeState: visibility
@@ -80,10 +82,12 @@ class __SuccessContentState extends State<_SuccessContent> {
                     color: Colors.white,
                     fontSize: 46.sp,
                     fontWeight: FontWeight.bold)),
-          )),
+          )
+        ),
       backgroundColor: _color,
       body: isDesktop && ScreenUtil().orientation == Orientation.landscape
-          ? Row(
+          ? 
+          Row(
               children: [
                 _HeaderSection(
                   isDesktop: true,
@@ -92,11 +96,15 @@ class __SuccessContentState extends State<_SuccessContent> {
                 Expanded(child: _BalanceSection(coins: widget._loaded.coins))
               ],
             )
-          : Stack(
+          : 
+          Stack(
               children: [
                 _HeaderSection(
                   total: Utils.getPrice(widget._loaded.totalDollars),
                 ),
+                // _BalanceSection(coins: widget._loaded.coins,
+                //  scrollController: ScrollController
+                // )
                 NotificationListener<DraggableScrollableNotification>(
                     onNotification:
                         (DraggableScrollableNotification dsNotification) {
@@ -112,24 +120,32 @@ class __SuccessContentState extends State<_SuccessContent> {
                       return true;
                     },
                     child: DraggableScrollableSheet(
-                        minChildSize: 0.45,
-                        maxChildSize: 1,
-                        initialChildSize: 0.45,
-                        builder: (context, scrollController) {
-                          return _BalanceSection(
-                              scrollController: scrollController,
-                              coins: widget._loaded.coins);
-                        }))
+                      minChildSize: 0.45,
+                      maxChildSize: 1,
+                      initialChildSize: 0.45,
+                      builder: (context, scrollController) {
+                        return _BalanceSection(
+                            scrollController: scrollController,
+                            coins: widget._loaded.coins);
+                      }
+                    )
+                        
+                  )
               ],
-            ),
+            )
+            
     );
+    
   }
 }
 
 class _BalanceSection extends StatelessWidget {
   const _BalanceSection(
-      {Key? key, ScrollController? scrollController, required List<Coin> coins})
-      : _scrollController = scrollController,
+      {Key? key, 
+      ScrollController? scrollController, 
+      required List<Coin> coins})
+      : 
+      _scrollController = scrollController,
         _coins = coins,
         super(key: key);
 
@@ -139,11 +155,13 @@ class _BalanceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              color: Colors.white,
+              // color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -161,7 +179,7 @@ class _BalanceSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 15.0),
                   ListView.separated(
-                    //controller: _scrollController,
+                    controller: _scrollController,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
@@ -203,7 +221,7 @@ class _HeaderSection extends StatelessWidget {
       children: [
         ElasticIn(
           child: SizedBox(
-            height: isDesktop ? 800.h : 400.h,
+            height: isDesktop ? 500.h : 300.h,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -215,15 +233,16 @@ class _HeaderSection extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('',
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 22.sp,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.w500)),
-                      SizedBox(
-                        height: 10.h,
-                      ),
+                      // Text('',
+                      //     style: TextStyle(
+                      //         color: Colors.grey,
+                      //         fontSize: 22.sp,
+                      //         letterSpacing: 1.5,
+                      //         fontWeight: FontWeight.w500)
+                      //         ),
+                      // SizedBox(
+                      //   height: 10.h,
+                      // ),
                       SizedBox(
                         width: 300.w,
                         child: FittedBox(
