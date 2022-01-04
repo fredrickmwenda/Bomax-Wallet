@@ -93,18 +93,24 @@ class PageVisibility {
 /// Note: Does not transform pages in any way, but provides the means
 /// to easily do it, in the form of [PageVisibility].
 class PageTransformer extends StatefulWidget {
-  PageTransformer({
-    @required this.pageViewBuilder,
-  });
+  const PageTransformer({Key? key, 
+    required this.pageViewBuilder,
+    PageVisibilityResolver?  visibilityResolver,
+  }) : _visibilityResolver = visibilityResolver,
+  
+  super(key: key);
 
   final PageViewBuilder? pageViewBuilder;
+  final  PageVisibilityResolver? _visibilityResolver;
 
   @override
-  _PageTransformerState createState() => _PageTransformerState();
+  State<PageTransformer> createState() => _PageTransformerState();
 }
 
 class _PageTransformerState extends State<PageTransformer> {
-  late PageVisibilityResolver _visibilityResolver;
+   
+  PageVisibilityResolver? _visibilityResolver;
+
 
   @override
   Widget build(BuildContext context) {
