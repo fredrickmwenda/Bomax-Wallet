@@ -1,23 +1,24 @@
 import 'dart:async';
-import 'package:bodax_wallet/presentation/core/models/news_list.dart';
-import 'package:bodax_wallet/presentation/core/models/news_model.dart';
-import 'package:bodax_wallet/presentation/core/widgets/news_intro.dart';
-import 'package:bodax_wallet/presentation/core/widgets/news_list_detail.dart';
-import 'package:bodax_wallet/presentation/core/widgets/page_transformer.dart';
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
+import 'package:bodax_wallet/presentation/core/widgets/news_loaded.dart';
+import 'package:bodax_wallet/presentation/core/widgets/news_loaded_header.dart';
+import 'package:bodax_wallet/presentation/core/widgets/news_loading.dart';
+import 'package:bodax_wallet/presentation/core/widgets/news_loading_header.dart';
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
 class NewsPage extends StatefulWidget {
-  
-  const NewsPage({Key? key}) : super(key: key);
-  // final Widget? childe;
+  const NewsPage({Key? key, required this.news}) : super(key: key);
+  final Future<List<News>> news;
 
-
- @override
-  State<NewsPage> createState() => _NewsPageState();
+  @override
+  // ignore: no_logic_in_create_state
+  State<NewsPage> createState() => _NewsPageState(news: news);
 }
 
 class _NewsPageState extends State<NewsPage> {
+  _NewsPageState({required this.news});
+  final Future<List<News>> news;
+
   ///
   /// Get image data dummy from firebase server
   ///
@@ -31,12 +32,10 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   void initState() {
-    
-  Timer(
-    const Duration(seconds: 3),(){
-setState(() {
-  loadImage=false;
-});
+    Timer(const Duration(seconds: 3), () {
+      setState(() {
+        loadImage = false;
+      });
     });
     // TODO: implement initState
     super.initState();
@@ -57,8 +56,7 @@ setState(() {
                           end: Alignment.bottomRight,
                           tileMode: TileMode.repeated,
                           colors: [Color(0xFF15EDED), Color(0xFF029CF5)])),
-                )
-              ),
+                )),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,11 +74,55 @@ setState(() {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: loadImage
-                      ? _loadingDataHeader(context)
-                      : _dataLoadedHeader(context),
-                ),
+                    padding: const EdgeInsets.only(top: 30.0),
+                    // child: loadImage
+                    //     ? _loadingDataHeader(context)
+                    //     : _dataLoadedHeader(context),
+                    child: loadImage
+                        ? SizedBox.fromSize(
+                            size: const Size.fromHeight(500.0),
+                            child: FutureBuilder<List<News>>(
+                              builder: (BuildContext context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.none &&
+                                    !snapshot.hasData) {
+                                  return const Text('No data');
+                                }
+                                return NewsLoadingHeader(items: snapshot.data);
+                              },
+                              future: news,
+                            )
+                            // child: FutureBuilder<List<News>>(
+                            //   future: news,
+                            //   builder: (context, snapshot) {
+                            //     if (snapshot.hasError) print(snapshot.error);
+                            //     return snapshot.hasData
+                            //         ? NewsLoadingHeader(items: snapshot.data)
+                            //         : Center(child: CircularProgressIndicator());
+                            //   },
+                            // ),
+                            )
+                        : SizedBox.fromSize(
+                            size: const Size.fromHeight(500.0),
+                            child: FutureBuilder<List<News>>(
+                              future: news,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.none &&
+                                    !snapshot.hasData) {
+                                  return const Text('No data');
+                                }
+                                return NewsLoadedHeader(items: snapshot.data);
+
+                                // if (snapshot.hasError) print(snapshot.error);
+                                // return snapshot.hasData
+                                //     ? NewsLoadedHeader(items: snapshot.data)
+                                // : Center(
+                                //     child: CircularProgressIndicator());
+                              },
+                            ),
+                          )),
+
                 const Padding(
                   padding: EdgeInsets.only(top: 40.0, left: 30.0),
                   child: Text('Crypto Popular News',
@@ -89,9 +131,33 @@ setState(() {
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700)),
                 ),
+                // loadImage
+                //     ? _loadingDataList(context)
+                //     : _dataLoadedList(context),
                 loadImage
-                    ? _loadingDataList(context)
-                    : _dataLoadedList(context),
+                    ? Container(
+                        child: FutureBuilder<List<News>>(
+                          future: news,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) print(snapshot.error);
+                            return snapshot.hasData
+                                ? NewsLoading(items: snapshot.data)
+                                : Center(child: CircularProgressIndicator());
+                          },
+                        ),
+                      )
+                    : Container(
+                        child: FutureBuilder<List<News>>(
+                          future: news,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) print(snapshot.error);
+                            return snapshot.hasData
+                                ? NewsLoaded(items: snapshot.data)
+                                : Center(child: CircularProgressIndicator());
+                          },
+                        ),
+                      ),
+
                 const SizedBox(
                   height: 10.0,
                 )
@@ -102,335 +168,6 @@ setState(() {
       ),
     );
   }
-}
-
-///
-///
-/// Calling imageLoading animation for set a grid layout
-///
-///
-Widget _loadingDataHeader(BuildContext context) {
-  return SizedBox.fromSize(
-    size: const Size.fromHeight(500.0),
-    child: PageTransformer(
-      pageViewBuilder: (context, visibilityResolver) {
-        return PageView.builder(
-          controller: PageController(viewportFraction: 0.87),
-          itemCount: sampleItems.length,
-          itemBuilder: (context, index) {
-            final item = sampleItems[index];
-            final pageVisibility =
-                visibilityResolver.resolvePageVisibility(index);
-            return cardHeaderLoading(context);
-          },
-        );
-      },
-    ),
-
-  );
-}
-
-Widget cardHeaderLoading(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      height: 500.0,
-      width: 275.0,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        color: Color(0xFF2C3B4F),
-      ),
-      child: Shimmer.fromColors(
-        baseColor: const Color(0xFF3B4659),
-        highlightColor: const Color(0xFF606B78),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 320.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                height: 17.0,
-                width: 70.0,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              ),
-              const SizedBox(
-                height: 25.0,
-              ),
-              Container(
-                height: 20.0,
-                width: 150.0,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Container(
-                height: 20.0,
-                width: 250.0,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Container(
-                height: 20.0,
-                width: 150.0,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-///
-///
-/// Calling ImageLoaded animation for set a grid layout
-///
-///
-Widget _dataLoadedHeader(BuildContext context) {
-  return SizedBox.fromSize(
-    size: const Size.fromHeight(500.0),
-    child: PageTransformer(
-      pageViewBuilder: (context, visibilityResolver) {
-        return PageView.builder(
-          controller: PageController(viewportFraction: 0.87),
-          itemCount: sampleItems.length,
-          itemBuilder: (context, index) {
-            final item = sampleItems[index];
-            final pageVisibility =
-                visibilityResolver.resolvePageVisibility(index);
-            return IntroPageItem(item: item,pageVisibility: pageVisibility,);
-            
-          },
-        );
-      },
-    ),
-  );
-}
-
-///
-///
-/// Calling imageLoading animation for set a list layout
-///
-///
-Widget _loadingDataList(BuildContext context) {
-  return Container(
-    child: ListView.builder(
-      shrinkWrap: true,
-      primary: false,
-      padding: const EdgeInsets.only(top: 0.0),
-      itemCount: newsList.length,
-      itemBuilder: (ctx, i) {
-        return loadingCard(ctx, newsList[i]);
-      },
-    ),
-  );
-}
-
-Widget loadingCard(BuildContext ctx, newsListBottom item) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 25.0, top: 20.0, bottom: 0.0),
-    child: Shimmer.fromColors(
-      baseColor: const Color(0xFF3B4659),
-      highlightColor: const Color(0xFF606B78),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            height: 95.0,
-            width: 130.0,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              color: Theme.of(ctx).hintColor.withAlpha(170),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    height: 13.0,
-                    width: 70.0,
-                    color: Theme.of(ctx).hintColor.withAlpha(170),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 7.0),
-                  child: Container(
-                    height: 15.0,
-                    width: 170.0,
-                    color: Theme.of(ctx).hintColor.withAlpha(170),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 7.0),
-                  child: Container(
-                    height: 15.0,
-                    width: 170.0,
-                    color: Theme.of(ctx).hintColor.withAlpha(170),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.access_time,
-                        size: 15.0,
-                        color: Theme.of(ctx).hintColor.withAlpha(170),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5.0),
-                        child: Container(
-                          height: 12.0,
-                          width: 30.0,
-                          color: Theme.of(ctx).hintColor.withAlpha(170),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
-
-///
-///
-/// Calling ImageLoaded animation for set a grid layout
-///
-///
-Widget _dataLoadedList(BuildContext context) {
-  return Container(
-    child: ListView.builder(
-      shrinkWrap: true,
-      primary: false,
-      padding: const EdgeInsets.only(top: 0.0),
-      itemCount: newsList.length,
-      itemBuilder: (ctx, i) {
-        return card(newsList[i], ctx);
-      },
-    ),
-  );
-}
-
-Widget card(newsListBottom item, BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 25.0, top: 20.0, bottom: 0.0),
-    child: InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-          PageRouteBuilder(
-              pageBuilder: (_, __, ___) => newsListDetail(item: item),
-              transitionDuration: const Duration(milliseconds: 600),
-              transitionsBuilder:
-                  (_, Animation<double> animation, __, Widget child) {
-                return Opacity(
-                  opacity: animation.value,
-                  child: child,
-                );
-              }),
-        );
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Hero(
-            tag: 'hero-tag-list-${item.id}',
-            child: Material(
-              child: Container(
-                height: 95.0,
-                width: 130.0,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-                  image: DecorationImage(
-                      image: AssetImage(
-                        item.img,
-                      ),
-                      fit: BoxFit.cover),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 2.0),
-                  child: Text(
-                    item.author,
-                    style: TextStyle(
-                        fontFamily: 'Gotik',
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context)
-                            .textSelectionColor
-                            .withOpacity(0.3)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 7.0),
-                  child: Container(
-                      width: 180.0,
-                      child: Text(
-                        item.title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 16.0
-                          ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.access_time,
-                        size: 15.0,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5.0),
-                        child: Text(
-                          item.time,
-                          style: TextStyle(
-                              color: Theme.of(context).hintColor,
-                              fontFamily: 'Gotik'),
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    ),
-  );
 }
 
 class CurvePainter extends CustomPainter {

@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
 import 'package:bodax_wallet/presentation/pages/news_page.dart';
 import 'package:collapsible_sidebar/collapsible_sidebar.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:http/http.dart' as client;
 import 'package:responsive_builder/responsive_builder.dart';
 
 import 'balance_page.dart';
@@ -13,16 +18,71 @@ import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
+  // final Future<List<News>> news;
 
   final List<Widget> _pages = [
     const BalancePage(),
     const CoinListPage(),
-    const NewsPage(),
+    NewsPage(news: fetchNewsList()),
     const ProfilePageBody()
   ];
 
   @override
   _HomePageState createState() => _HomePageState();
+}
+
+List<News> parseNews(String responseBody) {
+  // final parsed = new Map<String, dynamic>.from(responseBody);
+  // return parsed.map<News>((json) => News.fromMap(json)).toList();
+  final parsed = json.decode(responseBody);
+
+  return (parsed["Data"] as List)
+      .map<News>((json) => News.fromJson(json))
+      .toList();
+}
+
+// List<News> parseNews(String responseBody) {
+//   // ignore: avoid_dynamic_calls
+//   // final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+//   final Map<String, dynamic> parsed = json.decode(responseBody);
+
+//   //
+
+//     return List<News>.from(
+//         parsed["response"].map((x) => News.fromJson(x)));
+// }
+
+Future<List<News>> fetchNewsList() async {
+  var queryparams = {
+    //pass the query parameters here
+    'lang': 'EN',
+    'extraParams': 'crypto-news',
+  };
+
+  var url = 'https://min-api.cryptocompare.com/data/v2/news/';
+  //use parse instead of http to use query parameters
+  var uri = Uri.parse(url).replace(queryParameters: queryparams);
+  final response = await client.get(
+    uri,
+    headers: {'Accept': 'application/json'},
+  );
+
+  if (response.statusCode == 200) {
+    // Class '_InternalLinkedHashMap<String, dynamic>' has no
+    //instance method 'cast' with matching arguments.
+    //  final jsonItems = json.decode(response.body).cast<Map<String, dynamic>>();
+    // List<News> tempList = jsonItems.map<News>((json) {
+    //   return News.fromJson(json);
+    // }).toList();
+    // return tempList;
+    // final parsed = json.decode(response.body);
+    // return parsed.map<News>((json) =>News.fromJson(json)).toList();
+
+    // Use the compute function to run parsePhotos in a separate isolate
+    return compute(parseNews, response.body);
+  } else {
+    throw Exception('Unable to fetch news from the REST API');
+  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -113,23 +173,23 @@ class _BottomNavigationBar extends StatelessWidget {
       rippleColor: Colors.grey,
       hoverColor: Colors.grey,
       haptic: true, // haptic feedback
-      tabBorderRadius: 15, 
-      tabActiveBorder: Border.all(color: Colors.black, width: 1), 
+      // tabBorderRadius: 15,
+      // tabActiveBorder: Border.all(color: Colors.white, width: 1),
       // tab button border
-      tabBorder: Border.all(color:Colors.black, width: 1),
-      tabShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5), 
-                  blurRadius: 8)], // tab button shadow
+      // tabBorder: Border.all(color:Colors.white ,width: 1),
+      // tabShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5),
+      //             blurRadius: 8)], // tab button shadow
       curve: Curves.easeOutExpo, // tab animation curves
       duration: const Duration(milliseconds: 900), // tab animation duration
-      gap: 8, // the tab button gap between icon and text 
-      color: Colors.grey[800],
-      activeColor: Colors.purple, // selected icon and text color
+      gap: 8, // the tab button gap between icon and text
+      color: Colors.white,
+      activeColor: Colors.red, // selected icon and text color
       iconSize: 24, // tab button icon size
-      tabBackgroundColor: Colors.purple.withOpacity(0.1), 
+      tabBackgroundColor: Colors.purple.withOpacity(0.1),
       // selected tab background color
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), 
-      
-      tabs: const[
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+
+      tabs: const [
         GButton(
           icon: Icons.home_filled,
           text: 'Home',
@@ -149,6 +209,5 @@ class _BottomNavigationBar extends StatelessWidget {
       ],
       onTabChange: onTap,
     );
-  
   }
 }

@@ -1,14 +1,16 @@
-import 'package:bodax_wallet/presentation/core/models/news_model.dart';
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
+
 import 'package:bodax_wallet/presentation/core/widgets/header_slider.dart';
 import 'package:bodax_wallet/presentation/core/widgets/page_transformer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 class IntroPageItem extends StatelessWidget {
-  const IntroPageItem({Key? key, this.item, this.pageVisibility
+  const IntroPageItem({Key? key, required this.item, this.pageVisibility
   }) : super(key: key);
 
-  final newsModel? item;
+  final News item;
   // final PageVisibility pageVisibility;
   final PageVisibility? pageVisibility;
 
@@ -39,7 +41,7 @@ class IntroPageItem extends StatelessWidget {
     var categoryText = _applyTextEffects(
       translationFactor: 300.0,
       child: Text(
-        item!.category,
+        item.source!,
         style: textTheme.caption!.copyWith(
           color: Colors.white70,
           fontWeight: FontWeight.bold,
@@ -55,7 +57,7 @@ class IntroPageItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(top: 16.0),
         child: Text(
-          item!.title,
+          item.title!,
           style: textTheme.subtitle1!.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.bold
@@ -84,7 +86,7 @@ class IntroPageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var image = Image.asset(
-      item!.imageUrl,
+      item.url!,
       fit: BoxFit.cover,
       alignment: FractionalOffset(
         0.5 + (pageVisibility!.pagePosition! / 3),
@@ -108,13 +110,13 @@ class IntroPageItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 15.0),
       child: Hero(
-        tag: 'hero-tag-${item!.id}',
+        tag: 'hero-tag-${item.id}',
         child: Material(
           child: Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               image: DecorationImage(
-                image: AssetImage(item!.imageUrl),
+                image: CachedNetworkImageProvider(item.imageurl!),
                 fit: BoxFit.cover,
                 alignment: FractionalOffset(
                   0.5 + (pageVisibility!.pagePosition! / 3),

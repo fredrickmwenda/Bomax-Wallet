@@ -1,4 +1,6 @@
-import 'package:bodax_wallet/presentation/core/models/news_list.dart';
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -7,7 +9,7 @@ class newsListDetail extends StatefulWidget {
  
 
   newsListDetail({Key? key, required this.item}) : super(key: key);
-   newsListBottom item;
+  final  News item;
 
  @override
   // ignore: no_logic_in_create_state
@@ -18,7 +20,7 @@ class newsListDetail extends StatefulWidget {
 class _newsListDetailState extends State<newsListDetail> {
   
   _newsListDetailState({required this.item});
-  newsListBottom item;
+  News item;
   @override
   Widget build(BuildContext context) {
     double _fullHeight = MediaQuery.of(context).size.height;
@@ -30,7 +32,7 @@ class _newsListDetailState extends State<newsListDetail> {
         decoration:  BoxDecoration(
           image:  DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage(item.img),
+            image: AssetImage(item.imageurl!),
           ),
           shape: BoxShape.rectangle,
         ),
@@ -59,7 +61,7 @@ class _newsListDetailState extends State<newsListDetail> {
           slivers: <Widget>[
             SliverPersistentHeader(
               delegate: MySliverAppBar(
-                img: item.img, 
+                img: item.imageurl, 
                 id: item.id, 
                 expandedHeight: _height - 0.0
               ),
@@ -73,12 +75,12 @@ class _newsListDetailState extends State<newsListDetail> {
                 child: Column(children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 40.0, left: 20.0, right: 20.0, bottom: 20.0),
+                    top: 40.0, left: 20.0, right: 20.0, bottom: 10.0),
                 child: Text(
-                  item.title,
+                  item.title!,
                   style: TextStyle(
                       fontFamily: 'Popins',
-                      color: Theme.of(context).textSelectionColor,
+                      color: Colors.red[900],
                       fontSize: 20.0,
                       fontWeight: FontWeight.w600),
                   textAlign: TextAlign.justify,
@@ -88,7 +90,7 @@ class _newsListDetailState extends State<newsListDetail> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 20.0, right: 20.0, bottom: 20.0),
                 child: Text(
-                  item.desc1,
+                  item.body!,
                   style: TextStyle(
                       fontFamily: 'Popins',
                       color: Theme.of(context).textSelectionColor,
@@ -101,7 +103,7 @@ class _newsListDetailState extends State<newsListDetail> {
                 padding: const EdgeInsets.only(
                     top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
                 child: Text(
-                  item.desc2,
+                  item.tags!,
                   style: TextStyle(
                       fontFamily: 'Popins',
                       color: Theme.of(context).textSelectionColor,
@@ -114,7 +116,7 @@ class _newsListDetailState extends State<newsListDetail> {
                 padding: const EdgeInsets.only(
                     top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
                 child: Text(
-                  item.desc3,
+                  item.source!,
                   style: TextStyle(
                       fontFamily: 'Popins',
                       color: Theme.of(context).textSelectionColor,
@@ -165,7 +167,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
               decoration:  BoxDecoration(
                 image:  DecorationImage(
                   fit: BoxFit.cover,
-                  image:  AssetImage(img!),
+                  image:  CachedNetworkImageProvider(img!),
                 ),
                 shape: BoxShape.rectangle,
               ),

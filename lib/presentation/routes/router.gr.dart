@@ -7,11 +7,11 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
-import '../pages/confirmation_page.dart' as _i6;
-import '../pages/convert_page.dart' as _i5;
+import '../pages/confirmation_page.dart' as _i5;
+import '../pages/convert_page.dart' as _i4;
 import '../pages/welcome_page.dart' as _i3;
-import '../pages/home_page.dart' as _i4;
-import '../pages/status_page.dart' as _i7;
+// import '../pages/home_page.dart' as _i4;
+import '../pages/status_page.dart' as _i6;
 // import '../pages/coin_detail_page.dart' as _i8;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -20,13 +20,13 @@ class AppRouter extends _i1.RootStackRouter {
 
   @override
   final Map<String, _i1.PageFactory> pagesMap = {
-    HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
-        routeData: routeData,
-        builder: (data) {
-          final args =
-            data.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
-          return _i4.HomePage(key: args.key);
-        }),
+    // HomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+    //     routeData: routeData,
+    //     builder: (data) {
+    //       final args =
+    //         data.argsAs<HomeRouteArgs>(orElse: () => const HomeRouteArgs());
+    //       return _i4.HomePage(key: args.key);
+    //     }),
     WelcomeRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
       routeData: routeData,
       builder: (data){
@@ -39,17 +39,17 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (data) {
           final args = data.argsAs<ConvertRouteArgs>(
               orElse: () => const ConvertRouteArgs());
-          return _i5.ConvertPage(key: args.key);
+          return _i4.ConvertPage(key: args.key);
         }),
     ConfirmationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i6.ConfirmationPage();
+          return const _i5.ConfirmationPage();
         }),
     StatusRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i7.StatusPage();
+          return const _i6.StatusPage();
         }),
     // CoinDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
     //     routeData: routeData,
@@ -120,8 +120,4 @@ class StatusRoute extends _i1.PageRouteInfo {
   static const String name = 'StatusRoute';
 }
 
-// class CoinDetailRoute extends _i1.PageRouteInfo {
-//   const CoinDetailRoute() : super(name, path: '/coin-detail-page');
 
-//   static const String name = 'CoinDetailRoute';
-// }

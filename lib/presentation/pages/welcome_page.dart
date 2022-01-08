@@ -1,3 +1,4 @@
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
 import 'package:bodax_wallet/presentation/pages/home_page.dart';
 import 'package:bodax_wallet/utils/items.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 class WelcomePage extends StatelessWidget {
   WelcomePage({Key? key}) : super(key: key);
   final _pageViewController =  PageController(initialPage: 0);
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

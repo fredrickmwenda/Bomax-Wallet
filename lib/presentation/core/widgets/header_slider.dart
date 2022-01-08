@@ -1,20 +1,18 @@
-import 'package:bodax_wallet/presentation/core/models/news_model.dart';
+import 'package:bodax_wallet/presentation/core/models/new_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class HeaderSliderDetail extends StatefulWidget {
-  
-
-  const HeaderSliderDetail({Key? key, @required this.item}) : super(key: key);
-  final newsModel? item;
+  const HeaderSliderDetail({Key? key, required this.item}) : super(key: key);
+  final News item;
 
   @override
-  State<HeaderSliderDetail> createState() => _HeaderSliderDetailState(item!);
+  State<HeaderSliderDetail> createState() => _HeaderSliderDetailState(item);
 }
 
 class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
-  
   _HeaderSliderDetailState(this.item);
-  newsModel item;
+  News item;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage(item.imageUrl),
+            image: CachedNetworkImageProvider(item.imageurl!),
           ),
           shape: BoxShape.rectangle,
         ),
@@ -57,10 +55,10 @@ class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
             SliverPersistentHeader(
               delegate: MySliverAppBar(
                   expandedHeight: _height - 30.0,
-                  img: item.imageUrl,
+                  img: item.imageurl,
                   id: item.id,
                   title: item.title,
-                  category: item.category),
+                  category: item.source),
               pinned: true,
             ),
 
@@ -118,7 +116,20 @@ class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 20.0, right: 20.0, bottom: 20.0),
                 child: Text(
-                  item.desc1,
+                  item.title!,
+                  style: TextStyle(
+                      fontFamily: 'Popins',
+                      color: Colors.red[900],
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
+                child: Text(
+                  item.body!,
                   style: TextStyle(
                       fontFamily: 'Popins',
                       color: Theme.of(context).textSelectionColor,
@@ -131,20 +142,8 @@ class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
                 padding: const EdgeInsets.only(
                     top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
                 child: Text(
-                  item.desc2,
-                  style: TextStyle(
-                      fontFamily: 'Popins',
-                      color: Theme.of(context).textSelectionColor,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w400),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 20.0, left: 20.0, right: 20.0, bottom: 20.0),
-                child: Text(
-                  item.desc3,
+                  item.source!,
+                //  item.published_on.toString(),
                   style: TextStyle(
                       fontFamily: 'Popins',
                       color: Theme.of(context).textSelectionColor,
@@ -165,8 +164,6 @@ class _HeaderSliderDetailState extends State<HeaderSliderDetail> {
 }
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
-
-
   MySliverAppBar(
       {@required this.expandedHeight,
       this.img,
@@ -196,10 +193,10 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             transitionOnUserGestures: true,
             tag: 'hero-tag-$id',
             child: DecoratedBox(
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(img!),
+                  image: CachedNetworkImageProvider(img!),
                 ),
                 shape: BoxShape.rectangle,
               ),
