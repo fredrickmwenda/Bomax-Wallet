@@ -1,4 +1,4 @@
-#Fri Jan 07 17:54:39 EAT 2022
+#Sun Jan 23 23:41:06 EAT 2022
 base.0=C\:\\Users\\basam\\Documents\\projects\\Bomax Wallet\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

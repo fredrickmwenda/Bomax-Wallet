@@ -1,6 +1,5 @@
-import 'package:bodax_wallet/presentation/core/models/new_model.dart';
-import 'package:bodax_wallet/presentation/pages/home_page.dart';
-import 'package:bodax_wallet/utils/items.dart';
+import 'package:bodax_wallet/presentation/pages/Authentication/signin_page.dart';
+import 'package:bodax_wallet/presentation/pages/Authentication/signup_page.dart';
 import 'package:flutter/material.dart';
 
 // class WelcomePage extends StatelessWidget {
@@ -8,157 +7,146 @@ import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
   WelcomePage({Key? key}) : super(key: key);
-  final _pageViewController =  PageController(initialPage: 0);
-  
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: const Color(0xffe0e9f8),
-        elevation: 0.0,
-        actions: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            width: 45,
-            child: InkWell(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const TransactionPage()
-                //   ),
-                // );
-              },
-              child: const Text(
-                'Skip',
-                style: TextStyle(
-                  color: Color(0xff347af0),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-              ),
-            ),
+    Size size = MediaQuery.of(context).size;
+    return Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/crypto.jpg'),
+            fit: BoxFit.cover,
           )
-        ],
-      ),
-      body: SafeArea(
-        child: PageView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageViewController,
-          itemBuilder: (context, index) {
-            return Column(
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: const Color(0xffe0e9f8),
-                  child: Image.asset(
-                    Items.welcomeMessage[index]['image']!,
-                    width: 326,
-                    height: 250,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    width: 375,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        )),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 25),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List<Widget>.generate(
-                              2,
-                              (indicator) => Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 3.0),
-                                height: 10.0,
-                                width: 10.0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  color: indicator == index
-                                      ? const Color(0xff347af0)
-                                      : const Color(0xffedf1f9),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          //use null safety if the element doesnt have a record
-                          Items.welcomeMessage[index]['title']!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 11,
-                        ),
-                        Text(
-                          //use null safety if the element doesnt have a record
-                          Items.welcomeMessage[index]['message']!,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Color(0xff485068),
-                            fontSize: 15,
-                          ),
-                        ),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () {
-                            if (index < 1) {
-                              _pageViewController.animateToPage(index + 1,
-                                  duration: const Duration(milliseconds: 500),
-                                  curve: Curves.ease);
-                            } else {
-                              Navigator.push(context, 
-                                MaterialPageRoute(
-                                  builder: (context) => HomePage()
-                                ),
-                              );
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                              backgroundColor: index != 1
-                                  ? Colors.transparent
-                                  : const Color(0xff347af0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: const BorderSide(
-                                      color: Color(0xff347af0)))),
-                          child: Container(
-                            width: 160,
-                            height: 40,
-                            alignment: Alignment.center,
-                            child: Text(
-                              index != 1 ? 'Next Step' : 'Let\'s Get Started',
-                              style: TextStyle(
-                                color: index != 1
-                                    ? const Color(0xff347af0)
-                                    : Colors.blue,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+        ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.transparent,
+          ),
+      child: Padding(
+        padding: EdgeInsets.all(23),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //We take the image from the assets
+            // Image.asset(
+            //   'assets/crypto.jpg',
+            //   height: 250,
+            // ),
+            const SizedBox(
+              height: 20,
+            ),
+            //Texts and Styling of them
+            const Text(
+              'Create a free account',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 22),
+            ),
+            const SizedBox(height: 10),
+            RoundedButton(
+              text: 'Create an Account', 
+              color: Colors.red,
+              textColor: Colors.white, 
+              width: size.width * 0.6,
+              onTap:  () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SignUpPage();
+                      },
                     ),
-                  ),
-                )
-              ],
-            );
-          },
-          itemCount: 2,
+                  );
+                },
+            ),
+
+            const SizedBox(height: 5),
+
+            RoundedButton(
+              text: 'Login', 
+              color: Colors.red,
+              textColor: Colors.white, 
+              width: size.width * 0.6,
+              onTap:  () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const SignInPage();
+                      },
+                    ),
+                  );
+                },
+            ),
+          ],
+        ),
+      ),
+      )
+      )
+      
+    );
+  }
+}
+
+class RoundedButton extends StatelessWidget {
+  const RoundedButton({
+    Key? key,
+    required this.text,
+    required this.color,
+    required this.textColor,
+    VoidCallback? onTap, 
+    required this.width,
+  })  : _onTap = onTap,
+        super(key: key);
+
+  final String text;
+  // final Function press;
+  final Color color, textColor;
+  final VoidCallback? _onTap;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      width: width,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(29),
+        child: ElevatedButton(
+          onPressed: _onTap,
+          style: ElevatedButton.styleFrom(
+              primary: color,
+              
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              textStyle: TextStyle(
+                color: textColor, fontSize: 14, fontWeight: FontWeight.w500
+              )
+          ),
+          // child: Ink(
+          //   decoration: const BoxDecoration(
+          //     gradient: LinearGradient(
+          //     colors: [
+          //        Color(0xFFffb421),
+          //         Color(0xFFff7521)
+          //     ]),
+              
+
+          //   ),
+
+          // child: Text(
+          //   text,
+          //   style: TextStyle(color: textColor),
+          // ),
+
+          // )
+        
+          child: Text(
+            text,
+            style: TextStyle(color: textColor),
+          ),
         ),
       ),
     );

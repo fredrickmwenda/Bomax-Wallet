@@ -15,7 +15,7 @@ dependencies:
   animate_do: ^2.0.0
   auto_route: ^2.1.0
   collapsible_sidebar: ^2.0.0
-  convex_bottom_bar: ^3.0.0
+  
   dartz: ^0.10.0-nullsafety.1
   flutter_riverpod: ^0.14.0+3
   flutter_screenutil: ^5.0.0
@@ -28,9 +28,12 @@ dependencies:
   fl_chart: ^0.40.2
   cached_network_image: ^3.2.0
   flutter_slidable: ^1.1.0
-  iconsax: ^0.0.8
   shimmer: ^2.0.0
   google_nav_bar: ^5.0.5
+  web_socket_channel: ^2.1.0
+  web3dart: ^2.3.3
+  firebase_auth: ^3.3.5
+  pin_entry_text_field: ^0.1.4
   
   
 

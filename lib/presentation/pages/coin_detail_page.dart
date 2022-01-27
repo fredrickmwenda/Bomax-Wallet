@@ -1,6 +1,7 @@
 import 'package:auto_route/src/router/auto_router_x.dart';
 
 import 'package:bodax_wallet/domain/coin.dart';
+import 'package:bodax_wallet/presentation/pages/transaction.dart';
 import 'package:bodax_wallet/widget/transaction_process.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -75,144 +76,218 @@ class _CoinDetailState extends State<CoinDetail> {
               ))
             ];
           },
-          body: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const TransactionProcess(
-                          icon: Icons.arrow_downward, title: 'Receive'),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const TransactionProcess(
-                          icon: Icons.arrow_upward, 
-                          title: 'Send'
+          body: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+            child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const TransactionProcess(
+                            icon: Icons.arrow_downward, title: 'Receive'),
+                        const SizedBox(
+                          width: 10,
                         ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      TransactionProcess(
-                        icon: Icons.swap_horiz, 
-                        title: 'Swap',
-                        onTap: (){
-                          context.router.push(ConvertRoute());
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
-               Container(
-                  height: 700.0,
-                    child:  Column(
+                        const TransactionProcess(
+                            icon: Icons.arrow_upward, title: 'Send'),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        TransactionProcess(
+                          icon: Icons.swap_horiz,
+                          title: 'Swap',
+                          onTap: () {
+                            context.router.push(ConvertRoute());
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Container(
+                      
+                      // height: double.infinity,
+                      color: Colors.transparent,
+                      // decoration: BoxDecoration(
+                      //   border: Border.
+                      // ),
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Expanded(
-                            child: DefaultTabController(
-                              length: 2, 
-                              child: Scaffold(
-                                appBar: PreferredSize(
-                                  preferredSize: const Size.fromHeight(53.0),
-                                  child: AppBar(
-                                    backgroundColor:
-                                      Theme.of(context).scaffoldBackgroundColor,
-                                    elevation: 0.0,
-                                    centerTitle: true,
-                                    flexibleSpace: SafeArea(
-                                      child: Container(
-                                        child: Padding(
-                                          padding: 
-                                          const EdgeInsets.only(right: 100.0),
-                                          child: TabBar(
-                                            indicatorColor: Colors.amber,
-                                            labelColor: 
-                                              Theme.of(context).primaryColor,
-                                            unselectedLabelColor:
-                                              Theme.of(context).textSelectionColor,
-                                            indicatorSize: 
-                                              TabBarIndicatorSize.label,
-                                            tabs: [
-                                            Tab(
-                                              child: Row(
-                                                children: const <Widget>[
-                                                  Padding(
-                                                    padding: 
-                                                    EdgeInsets.only(
-                                                        left: 4.0),
-                                                    child: Icon(
-                                                      IconData(0xe900,
-                                                        fontFamily: 'gainers'
-                                                      ),
-                                                      size: 15.0,
-                                                    ),
+                              child: DefaultTabController(
+                                  length: 3,
+                                  child: Scaffold(
+                                    appBar: PreferredSize(
+                                      preferredSize: const Size.fromHeight(53.0),
+                                      child: AppBar(
+                                        backgroundColor: const Color(0xff161621),
+                                        elevation: 0.0,
+                                        centerTitle: true,
+                                        flexibleSpace: SafeArea(
+                                          child: Container(
+                                            child: TabBar(
+                                              indicatorColor: Colors.amber,
+                                              labelColor: Colors.red,
+                                              unselectedLabelColor:
+                                                  Theme.of(context)
+                                                      .textSelectionColor,
+                                              indicatorSize:
+                                                  TabBarIndicatorSize.label,
+                                              tabs: [
+                                                Tab(
+                                                  child: Row(
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 0.0),
+                                                        child: Text(
+                                                          'Transactions',
+                                                          style: TextStyle(
+                                                              fontFamily: 'Sans'),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      left: 8.0
-                                                    ),
-                                                    child: Text(
-                                                      'Transactions',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Sans'
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
+                                                ),
+                                                Tab(
+                                                  child: Row(
+                                                    children: const <Widget>[
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 8.0),
+                                                        child: Text('About'),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Tab(
+                                                    child: Row(
+                                                  children: const <Widget>[
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0),
+                                                      child: Text('Videos'),
+                                                    )
+                                                  ],
+                                                ))
+                                              ],
                                             ),
-                                            Tab(
-                                              child: Row(
-                                                children: const <Widget>[
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 8.0),
-                                                    child: Icon(
-                                                      IconData(0xe901,
-                                                          fontFamily: 'loser'),
-                                                      size: 15.0,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 8.0),
-                                                    child: Text('About'),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
+                                          ),
                                         ),
+                                        automaticallyImplyLeading: false,
                                       ),
                                     ),
+                                    body:  TabBarView(
+                                        children: [
+                                          // const transaction(),
+                                          Expanded(
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  color : Color(0xff161621)
+                                                ),
+                                                            
+                                                
+                                            child: ListView.separated(
+                                                separatorBuilder: (BuildContext context, int index) {
+                                                  return SizedBox(height: 3);
+                                                },
+                                                scrollDirection: Axis.vertical,
+          
+                                              
+                                                itemCount: 4,
+                                                itemBuilder: (ctx, index) {
+                                                  return Container(
+                                                  
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 20,
+                                                    ),
+                                                    margin: const EdgeInsets.only(top: 10.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: Colors.grey,
+                                                        width: 2
+                                                      ),
+                                                      borderRadius: BorderRadius.circular(20),
+                                                      
+                                                      
+                                                      
+                                                    ),
+                                                    child: Row(
+                                                      
+                                                      children: const[
+                                                      Icon(
+                                                        Icons.arrow_upward,
+                                                        color: Colors.blueGrey,
+                                                      ),
+                                                      SizedBox(width:10),
+                                                      Text(
+                                                        'Transfer',
+                                                        style: TextStyle(
+                                                          color: Colors.blueGrey,
+                                                        ),                                              
+                                                      ),
+          
+                                                      SizedBox(width:10),
+                                                      Text(
+                                                        '\$ 123.45',
+                                                        style: TextStyle(
+                                                          color: Colors.blueGrey,
+                                                          fontWeight: 
+                                                          FontWeight.bold
+                                                        ),                                              
+                                                      ),
+                                                      SizedBox(width:10),
+                                                      Text(
+                                                        '12:00 PM',
+                                                        style: TextStyle(
+                                                          color: Colors.blueGrey,
+                                                          fontSize: 12
+                                                         
+                                                        ),                                              
+                                                      ),                                                                                                        
+                                                    ]),
+                                                  );
+                                                }
+                                                ),
+                                          )
+                                          ),
+          
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8.0),
+                                            child:
+                                                Container(child: Text('Checkup')),
+                                          ),
+          
+                                          Container(
+                                            child: Text("Videos"),
+                                          )
+          
+                                          // loser(),
+                                        ],
+                                      ),
                                     ),
-                                     automaticallyImplyLeading: false,
+                                  )
+                                  //)
                                   ),
-                                
-
-                                ),
-                                body: const Padding(
-                                  padding: EdgeInsets.only(top: 10.0),
-                                  child:  TabBarView(
-                                    children: [
-                                      // gainer(),
-                                      // loser(),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            )
-                          ),
                         ],
                       ),
-                    
-                  )
-                ],
-              )),
-        ));
+                    )
+                  ],
+                )),
+          ),
+            ]
+        )
+        )
+        );
   }
 
   List<Color> gradientColors = [

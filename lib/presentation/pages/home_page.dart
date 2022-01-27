@@ -41,16 +41,7 @@ List<News> parseNews(String responseBody) {
       .toList();
 }
 
-// List<News> parseNews(String responseBody) {
-//   // ignore: avoid_dynamic_calls
-//   // final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-//   final Map<String, dynamic> parsed = json.decode(responseBody);
 
-//   //
-
-//     return List<News>.from(
-//         parsed["response"].map((x) => News.fromJson(x)));
-// }
 
 Future<List<News>> fetchNewsList() async {
   var queryparams = {
@@ -68,17 +59,6 @@ Future<List<News>> fetchNewsList() async {
   );
 
   if (response.statusCode == 200) {
-    // Class '_InternalLinkedHashMap<String, dynamic>' has no
-    //instance method 'cast' with matching arguments.
-    //  final jsonItems = json.decode(response.body).cast<Map<String, dynamic>>();
-    // List<News> tempList = jsonItems.map<News>((json) {
-    //   return News.fromJson(json);
-    // }).toList();
-    // return tempList;
-    // final parsed = json.decode(response.body);
-    // return parsed.map<News>((json) =>News.fromJson(json)).toList();
-
-    // Use the compute function to run parsePhotos in a separate isolate
     return compute(parseNews, response.body);
   } else {
     throw Exception('Unable to fetch news from the REST API');
